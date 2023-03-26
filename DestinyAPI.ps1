@@ -4,13 +4,28 @@
 # Date: 3/26/2023                                               #
 #################################################################
 
+param(
+    [switch]
+    $UseConfig #If desired, place JSON 1 level up from this folder in DestinyAPIConfig.json
+)
+
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Path
 
 #Configuration - Set variables here
-$env:BUNGIE_API_KEY = ""
-$clientId = ""
-$client_secret = ""
-$redirectUri = "https://localhost.local" #Override if desired, otherwise this must match what you configured for your app
+if(!($UseConfig)){
+    $env:BUNGIE_API_KEY = ""
+    $clientId = ""
+    $client_secret = ""
+    $redirectUri = "https://localhost.local" #Override if desired, otherwise this must match what you configured for your app
+} else {
+    $ConfigPath = "$ScriptPath\..\DestinyAPIConfig.json"
+    $ConfigContent = Get-Content -Raw $ConfigPath
+    $ConfigJSON = ConvertFrom-Json $ConfigContent
+    $env:BUNGIE_API_KEY = $ConfigJSON.APIKey
+    $clientId = $ConfigJSON.ClientID
+    $client_secret = $ConfigJSON.ClientSecret
+    $redirectUri = $ConfigJSON.RedirectURI
+}
 
 #TODO: Add logic to use a refresh token if one exists
 
