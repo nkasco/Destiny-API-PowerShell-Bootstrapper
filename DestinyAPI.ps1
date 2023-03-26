@@ -1,12 +1,18 @@
 #################################################################
-# Destiny API Handler                                           #
+# Destiny API Bootstrapper                                      #
 # Written By: Nathan Kasco                                      #
 # Date: 3/26/2023                                               #
 #################################################################
 
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Path
 
-#TODO: Use a refresh token if one exists
+#Configuration - Set variables here
+$env:BUNGIE_API_KEY = ""
+$clientId = ""
+$client_secret = ""
+$redirectUri = "https://localhost.local" #Override if desired, otherwise this must match what you configured for your app
+
+#TODO: Add logic to use a refresh token if one exists
 
 #Initialization
 try{
@@ -15,13 +21,8 @@ try{
     [void][reflection.assembly]::LoadFile("$ScriptPath\Microsoft.Web.WebView2.WinForms.dll")
     [void][reflection.assembly]::LoadFile("$ScriptPath\Microsoft.Web.WebView2.Core.dll")
 
-    $env:BUNGIE_API_KEY = "595e331dd1cb43fd9011ce77bab35d6e"
-
-    $clientId = "43464"
-    $client_secret = "7azGcKM.4Xj9sRrFGsKYvoJkTC2SZcppZt4jUY0k.Fk"
     $authUrl = "https://www.bungie.net/en/OAuth/Authorize"
     $tokenUrl = "https://www.bungie.net/platform/app/oauth/token/"
-    $redirectUri = "https://localhost.local"
 
     $authorizationUrl = "$($authUrl)?response_type=code&client_id=$clientId&state=1234&redirect_uri=$redirectUri"
 
@@ -73,6 +74,8 @@ try{
 
     $accessToken = $tokenResponse.access_token
     $headers = @{ "Authorization" = "Bearer $accessToken"; "X-API-Key" = $env:BUNGIE_API_KEY }
+
+    #IMPORTANT - AT THIS POINT YOU HAVE AN AUTH TOKEN, LISTED BELOW IS A SAMPLE OF HOW IT CAN BE USED
 
     #Get Bungie User Data
     $getUrl = "https://www.bungie.net/Platform/User/GetMembershipsForCurrentUser/"
