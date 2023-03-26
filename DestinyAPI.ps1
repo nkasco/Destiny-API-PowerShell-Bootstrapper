@@ -33,8 +33,8 @@ if(!($UseConfig)){
 try{
     Write-Progress -Activity "Initializing..."
     Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
-    [void][reflection.assembly]::LoadFile("$ScriptPath\Microsoft.Web.WebView2.WinForms.dll")
-    [void][reflection.assembly]::LoadFile("$ScriptPath\Microsoft.Web.WebView2.Core.dll")
+    [void][reflection.assembly]::LoadFile("$ScriptPath\source\Microsoft.Web.WebView2.WinForms.dll")
+    [void][reflection.assembly]::LoadFile("$ScriptPath\source\Microsoft.Web.WebView2.Core.dll")
 
     $authUrl = "https://www.bungie.net/en/OAuth/Authorize"
     $tokenUrl = "https://www.bungie.net/platform/app/oauth/token/"
@@ -49,7 +49,7 @@ try{
 
     [Microsoft.Web.WebView2.WinForms.WebView2]$webview = New-Object 'Microsoft.Web.WebView2.WinForms.WebView2'
     $webview.CreationProperties = New-Object 'Microsoft.Web.WebView2.WinForms.CoreWebView2CreationProperties' -ErrorAction Stop
-    $webview.CreationProperties.UserDataFolder = "$ScriptPath\UserData"
+    $webview.CreationProperties.UserDataFolder = "$ScriptPath\source\UserData"
     $webview.Dock = "Fill"
     $webview.source = $authorizationUrl
 
