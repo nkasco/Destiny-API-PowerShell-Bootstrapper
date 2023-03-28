@@ -4,9 +4,7 @@ This repo will help you quickly bootstrap initial authentication using the Bungi
 ![Sample Pic](Images/authentication.png)
 
 Assumptions:
-- You are running the script with Windows PowerShell 5.1
-  - PowerShell 7 is not supported at this time, though it probably could be if converted to WPF with minimal effort.
-  - .NET 7 doesn't include System.Windows.Forms.ContextMenu which is largely why this doesn't work OOTB beyond PowerShell 5.1.
+- You are running the script with Windows PowerShell 5.1 or PowerShell 7 (Both assemblies have been provided, they vary due to WinForm differences between .NET Framework 4.x and .NET 7)
 - You have created a PRIVATE application at [https://www.bungie.net/en/Application](https://www.bungie.net/en/Application)
 - Capture the API Key, Client ID, and Client Secret
 - Set the redirect URI to "https://localhost.local" (The bootstrapper will handle capturing the auth code silently)

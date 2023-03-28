@@ -33,8 +33,16 @@ if(!($UseConfig)){
 try{
     Write-Progress -Activity "Initializing..."
     Add-Type -AssemblyName System.Windows.Forms -ErrorAction Stop
-    [void][reflection.assembly]::LoadFile("$ScriptPath\source\Microsoft.Web.WebView2.WinForms.dll")
-    [void][reflection.assembly]::LoadFile("$ScriptPath\source\Microsoft.Web.WebView2.Core.dll")
+
+    if($PSVersionTable.PSEdition -eq "Core"){
+        #Handle .NET 7 / PowerShell 7
+        Add-Type -LiteralPath "$ScriptPath\source\7\Microsoft.Web.WebView2.WinForms.dll" -ErrorAction Stop
+        Add-Type -LiteralPath "$ScriptPath\source\7\Microsoft.Web.WebView2.Core.dll" -ErrorAction Stop
+    } else {
+        #Handle .NET Framework / PowerShell 5.1
+        Add-Type -LiteralPath "$ScriptPath\source\5\Microsoft.Web.WebView2.WinForms.dll" -ErrorAction Stop
+        Add-Type -LiteralPath "$ScriptPath\source\5\Microsoft.Web.WebView2.Core.dll" -ErrorAction Stop
+    }
 
     $authUrl = "https://www.bungie.net/en/OAuth/Authorize"
     $tokenUrl = "https://www.bungie.net/platform/app/oauth/token/"
